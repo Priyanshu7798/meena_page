@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romantic Picture Slideshow</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4);
+      background-size: 300% 300%;
+      animation: gradientShift 8s infinite;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 105, 135, 0.5);
+      text-align: center;
+      animation: fadeIn 3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slideshow-container {
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      animation: zoomIn 3s ease;
+    }
+
+    .slide img {
+      width: 100%;
+      border-radius: 15px;
+    }
+
+    .active {
+      display: block;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(1.2); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+
+    .prev, .next {
+      cursor: pointer;
+      background-color: rgba(255, 105, 135, 0.8);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 18px;
+      outline: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .prev:hover, .next:hover {
+      transform: scale(1.2);
+      background-color: rgba(255, 105, 135, 1);
+    }
+
+    .floating-hearts {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(255, 105, 135, 0.8);
+      opacity: 0.8;
+      clip-path: polygon(50% 0%, 100% 30%, 82% 100%, 50% 82%, 18% 100%, 0% 30%);
+      animation: floatHeart 6s infinite ease-in-out;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) translateX(0); opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    }
+
+    /* Randomize heart positions */
+    .heart:nth-child(odd) { animation-delay: 1s; }
+    .heart:nth-child(even) { animation-delay: 3s; }
+  </style>
+</head>
+<body>
+  <h1>Forever in Love: A Magical Journey Together</h1>
+  <div class="slideshow-container">
+    <div class="slide active">
+      <img src="Screenshot 2024-09-01 210303.png" alt="Slide 1">
+    </div>
+    <div class="slide">
+      <img src="Screenshot 2024-09-16 135010.png" alt="Slide 2">
+    </div>
+    <div class="slide">
+      <img src="Screenshot 2024-12-20 194509.png" alt="Slide 3">
+    </div>
+    <div class="controls">
+      <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+      <button class="next" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+  </div>
+
+  <div class="floating-hearts">
+    <div class="heart" style="left: 10%;"></div>
+    <div class="heart" style="left: 30%;"></div>
+    <div class="heart" style="left: 50%;"></div>
+    <div class="heart" style="left: 70%;"></div>
+    <div class="heart" style="left: 90%;"></div>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function changeSlide(direction) {
+      slides[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + direction + slides.length) % slides.length;
+      slides[currentIndex].classList.add('active');
+    }
+
+    // Optional: Auto-slide every 5 seconds
+    setInterval(() => changeSlide(1), 5000);
+  </script>
+</body>
+</html>
