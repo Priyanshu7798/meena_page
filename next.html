@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive and Responsive Slideshow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            background-repeat: repeat;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Cg fill=%22%23fff%22 opacity=%220.3%22%3E%3Cpath d=%22M50 90c10 0 20-8 25-20s0-35-10-45-30-10-40 5-10 35 5 50c5 5 15 10 25 10zm90 20c10 0 20-8 25-20s0-35-10-45-30-10-40 5-10 35 5 50c5 5 15 10 25 10z%22/%3E%3C/g%3E%3C/svg%3E');
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .slideshow-container {
+            max-width: 800px;
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            text-align: center;
+        }
+        .slide img {
+            width: 100%;
+            height: auto;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 3px;
+            transform: translateY(-50%);
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        .upload-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .upload-container input, .upload-container button {
+            margin: 10px;
+        }
+        @media screen and (max-width: 768px) {
+            .prev, .next {
+                font-size: 14px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+    <div class="slide">
+        <img src="Screenshot 2024-09-01 210303.png" alt="Slide 1">
+    </div>
+    <div class="slide">
+        <img src="Screenshot 2025-01-10 185548.png" alt="Slide 2">
+    </div>
+    <div class="slide">
+        <img src="https://via.placeholder.com/800x400?text=Image+3" alt="Slide 3">
+    </div>
+    
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+</div>
+
+<div class="upload-container">
+    <input type="file" id="imageUpload" accept="image/png">
+    <button id="addImageButton">Add Image</button>
+</div>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    const prev = document.querySelector('.prev');
+    const next = document.querySelector('.next');
+    const imageUpload = document.getElementById('imageUpload');
+    const addImageButton = document.getElementById('addImageButton');
+
+    function showSlide(index) {
+        const updatedSlides = document.querySelectorAll('.slide');
+        updatedSlides.forEach((slide, i) => {
+            slide.style.display = i === index ? 'block' : 'none';
+        });
+    }
+
+    function nextSlide() {
+        const updatedSlides = document.querySelectorAll('.slide');
+        slideIndex = (slideIndex + 1) % updatedSlides.length;
+        showSlide(slideIndex);
+    }
+
+    function prevSlide() {
+        const updatedSlides = document.querySelectorAll('.slide');
+        slideIndex = (slideIndex - 1 + updatedSlides.length) % updatedSlides.length;
+        showSlide(slideIndex);
+    }
+
+    next.addEventListener('click', nextSlide);
+    prev.addEventListener('click', prevSlide);
+
+    addImageButton.addEventListener('click', () => {
+        const file = imageUpload.files[0];
+        if (file && file.type === 'image/png') {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newSlide = document.createElement('div');
+                newSlide.className = 'slide';
+                newSlide.innerHTML = `<img src="${e.target.result}" alt="User Image">`;
+                slideshowContainer.insertBefore(newSlide, next);
+                showSlide(slideIndex); // Ensure current slide remains visible
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please upload a valid PNG image.');
+        }
+    });
+
+    // Initialize slideshow
+    showSlide(slideIndex);
+</script>
+
+</body>
+</html>
